@@ -42,3 +42,38 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
   });
 
 });
+
+// websocket server
+var WebSocketServer = require('ws').Server;
+var auth = require('./utils/auth');
+
+var wss = new WebSocketServer({
+    verifyClient: function (info, cb) {
+        var token = info.req.headers.token;
+        if (!token) {
+            // no token present
+            cb(false, 401, 'Unauthorized');
+        } else {
+            auth.verify_token(token, function (err, decoded) {
+                if (err) {
+                    // cannot decode, wrong token
+                    cb(false, 401, 'Unauthorized')
+                } else {
+                    if (decoded.expire <= Date.now()) {
+                        // token is expired
+                        cb(false, 401, 'Unauthorized')
+                    } else {
+                        cb(true)
+                    }
+                }
+            })
+        }
+    },
+    port: 3001
+});
+
+wss.on('open', function open() {
+    console.log('connected');
+    wss.send(Date.now());
+});
+
