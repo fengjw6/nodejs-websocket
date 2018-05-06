@@ -10,6 +10,7 @@ module.exports.loginPost = function loginPost (req, res, next) {
       utils.writeJson(res, response);
     })
     .catch(function (response) {
-      utils.writeJson(res, response);
+      // return 403 auth failed
+      utils.writeJson(res, response, 403);
     });
 };
