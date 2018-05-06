@@ -77,5 +77,9 @@ var wss = new WebSocketServer({
 });
 
 wss.on('connection', function connection(ws) {
-    ws.send('server time is ' + Date.now());
+
+    // send server time every 5s
+    setInterval(function () {
+        ws.send('server time is ' + Date.now());
+    }, 5000);
 });
