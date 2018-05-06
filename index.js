@@ -52,17 +52,21 @@ var wss = new WebSocketServer({
         var token = info.req.headers.token;
         if (!token) {
             // no token present
+            console.log('no token present!!!');
             cb(false, 401, 'Unauthorized');
         } else {
             auth.verify_token(token, function (err, decoded) {
                 if (err) {
                     // cannot decode, wrong token
+                    console.log('wrong token!!!');
                     cb(false, 401, 'Unauthorized')
                 } else {
                     if (decoded.expire <= Date.now()) {
                         // token is expired
+                        console.log('token is expired!!!');
                         cb(false, 401, 'Unauthorized')
                     } else {
+                        console.log('correct token!!!');
                         cb(true)
                     }
                 }
@@ -72,8 +76,6 @@ var wss = new WebSocketServer({
     port: 3001
 });
 
-wss.on('open', function open() {
-    console.log('connected');
-    wss.send(Date.now());
+wss.on('connection', function connection(ws) {
+    ws.send('server time is ' + Date.now());
 });
-
