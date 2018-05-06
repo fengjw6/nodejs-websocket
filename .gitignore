@@ -1,0 +1,5 @@
+.idea/
+
+.swagger-codegen/
+
+node_modules/
