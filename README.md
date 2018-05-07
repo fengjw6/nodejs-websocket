@@ -24,6 +24,12 @@ npm test
 
 
 ### Testing the web socket server
-run webSocketServer.good.test.js in another node instance
+Run webSocketServer.\*.test.\*.js in another node instance
 
+  - `webSocketServer.good.test.js` will fetch correct token and receive server time every 5s
+  - `webSocketServer.error.test.noTokenPresent.js` pass no token, will get 401 error
+  - `webSocketServer.error.test.wrongToken.js` pass a invalid token, will get 401 error
+  - `webSocketServer.error.test.tokenExpired.js` pass a expired token, will get 401 error
+
+---
 This project leverages the mega-awesome [swagger-tools](https://github.com/apigee-127/swagger-tools) middleware which does most all the work.
